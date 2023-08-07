@@ -12,8 +12,9 @@ import cv2
 #Date: 8/1/23
 
 #function: import_file
+#purpose: act as the first step of the software: asking the user for a file, and then reading the file as a grayscale image
 #arguments: none
-#returns: loaded-in pixel image GRAYSCALE
+#returns: uint8 array
 def import_file():
     #prompt user for filepath to pixel image
     fileName = input("Enter Filename: ") 
@@ -24,15 +25,14 @@ def import_file():
     return inputImage
     
     
-#Date: 8/2/23
-#Refined binarization attempt with Otsu's Thresholding
-#function: binarize
-#purpose: binarize a color image
-#inputs: uint8 array with 3 channels
-#outputs: binary uint8 array with 1 channel
+
+#function: Binarize Image
+#purpose: Transform the image into binary pixels instead of grayscale, employing blur and adaptive threshold
+#inputs: uint8 array (values 0-255)
+#outputs: uint8 array (0 or 1)
 def binarize_image(image) :
     image = cv2.medianBlur(image, 5)
     th = cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11,2)
     return th
 
-#apply low-frequency pass filter
+#future work: apply low-frequency pass filter

@@ -8,25 +8,10 @@ import cv2
 import inspect
 
 
-#function: find nearest contour index
-#purpose: as part of an effort to order the contours logically for the laser printer, a function to find the nearest point on a contour that we havent seen is necessary
-#arguments: a point and the list of contours
-#returns: the index of the nearest point of another contour
-def find_nearest_point(point, contours):
-    return
-    
-#function: reorder contours
-#purpose: orders the contours in such a way that minimized wasted movement of the laser printer
-#arguments: contours tuple
-#returns: reordered contours tuple
-def reorder_contours(contours):
-    return
-
-
-#function: rescale_contours
-#purpose: take the contour information and make the new bounds (-50,50) in X-axis and Y-axis
-#argument: contours tuple
-#returns: scaled contours tuple
+#function: Rescale Contours
+#purpose: Change the coordinate data of the contours so that they match the engravement area in millimeters
+#argument: tuple: ndarray
+#returns: tuple: ndarray
 def rescale_contours(contours):
     print(len(contours))
     print(contours[0].shape)
@@ -59,10 +44,10 @@ def rescale_contours(contours):
     return tuple(scaledContours)
 
 
-#function: generate gcode
-#purpose: efficiently create a set of gcode commands to draw the desired image
-#arguments: orderedContour tuple
-#return: array
+#function: Generate GCODE
+#purpose: create a set of gcode commands to draw the desired image
+#arguments: tuple: ndarray
+#return: array: string lines
 def generate_GCODE(commands, contours) :
     #step 1: append starting code and first contour code
     commands = add_starting_GCODE(commands, contours)
@@ -79,10 +64,11 @@ def generate_GCODE(commands, contours) :
     return commands
 
 
-#function: add_starting_GCODE
-#purpose: to append the GCODE array with starting gcode commands and first contour
-#arguments: array, tuple
-#returns: modified array
+#function: Add Starting GCODE
+#purpose: Initiate the GCODE array with starting gcode commands, first contour commands
+#arguments: array, tuple: ndarray
+#returns: array
+#future work: fix inefficiency- function takes all contours but only needs contours[0]
 def add_starting_GCODE(commands, contours):
     firstX, firstY = contours[0][0]
     #starting code
@@ -112,11 +98,10 @@ def add_starting_GCODE(commands, contours):
     return commands
 
 
-#function: add_transition_GCODE
-#purpose: the next step is to repeat a process of adding a transition set of commands that preceed a draw contour set of commands
-#notes: this function adds a SINGLE set of transition code and contour code. Another implementation should call this function as the contours are enumerated
-#arguments: array (command list), array (contour to be added)
-#output: modified array
+#function: Add Transition GCODE
+#purpose: Repeat the process of appending transition set of commands, next contour, for all remaining contours
+#arguments: array, tuple: ndarray
+#returns: array
 def add_transition_GCODE(commands, contour):
     firstX, firstY = contour[0]
     #transition code
@@ -145,10 +130,10 @@ def add_transition_GCODE(commands, contour):
     return commands
 
 
-#function: add ending GCODE
-#purpose: tail the gcode comman array with a set of ending commands
-#arguments: commands array
-#returns: augmented commands array
+#function: Add Ending GCODE
+#purpose: Add GCODE command tail with a set of ending commands
+#arguments: array
+#returns: array
 def add_ending_GCODE(commands) :
     endingCommands = ["G4 P0",
                      "M05 S0",
@@ -162,19 +147,19 @@ def add_ending_GCODE(commands) :
     return commands
 
 
-#function: print_gcode
-#purpose: print out gcode commands so i can see what they are without writing to a text file
+#function: Print GCODE
+#purpose: testing function: print out gcode commands
 #argument: array
-#return: nothing
+#return: -
 def print_gcode(gcode_commands):
     for command in gcode_commands :
         print(command)
 
 
-#function: file_write_gcode
-#purpose: open a file and write G-code commands
-#arguments: array of strings
-#returns: nothing!
+#function: Write GCODE
+#purpose: Write G-code commands to file: gcode.txt on my desktop
+#arguments: array
+#returns: -
 def write_GCODE(gcode):
     filePath = "/Users/samsonbienstock/Desktop/Foxconn/Image_Project/Code/gcode.txt"
     with open(filePath, 'w') as file:

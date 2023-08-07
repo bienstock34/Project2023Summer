@@ -7,10 +7,10 @@ import numpy as np
 import random
 
 
-#function: edge detection
-#purpose: determine the location of edges in the image
-#arguments: binarized image as uint8 [][] 
-#returns: edges as a uint8 [][] 
+#function: Detect Edges
+#purpose: Using the binarized image, transform into an edge represantation: 0s for no edge, 1s for yes edge
+#arguments: uint8 array
+#returns: uint8 array 
 def detect_edges(binarizedImage) :
     kernel = np.ones((3,3), np.uint8)
     dilatedImage = cv2.dilate(binarizedImage, kernel, iterations=1)
@@ -19,10 +19,10 @@ def detect_edges(binarizedImage) :
     return edges
 
 
-#function: find contours
-#purpose: partitions the discovered edges into contour regions
-#arguments: edges
-#returns: tuple of ndarrays of shape (#pointsInContour, 2), numpy array of shape (#contours, [Next, Previous, First Child, Parent])
+#function: Find Contours
+#purpose: Partition the discovered edges into contours
+#arguments: uint8 array
+#returns: tuple: ndarrays
 def find_contours(edges) :
     contours, hierarchy = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     #reshapes contour because I do not care about OpenCV convention
