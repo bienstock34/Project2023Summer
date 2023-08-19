@@ -1,7 +1,7 @@
 # Project2023Summer
 Project while learning about Battery DT technology for EV
 
-This project entails the process of converting a **JPEG image** file to a **GCODE file** which can be sent to the CubiioShield2 Laser engraver.
+(1) Project entails the process of converting a **JPEG image** file to a **GCODE file** which can be sent to the CubiioShield2 Laser engraver.
 The project involves opening the JPEG file followed by two main portions: edge detection, and GCODE generation.
 These two portions can be broken up further into modules, involving:
 
@@ -14,3 +14,4 @@ GCODE GENERATION:
 5) Contour Generation
 6) Contour Filtering
 7) GCODE command generation
+
